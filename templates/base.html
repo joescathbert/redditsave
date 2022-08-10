@@ -1,0 +1,62 @@
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="/static/style.css">
+        <title>Reddit Save</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="container">
+            <div id="wrapper">
+                <div id="logo">
+                    Reddit Save
+                </div>
+                <input type="checkbox" id="nav-menu-checkbox" name="nav-menu-checkbox" class="nav-menu-checkbox">
+                <div class="nav-menu">
+                    <label class="nav-menu-toggle" for="nav-menu-checkbox">
+                        <span class="ham"></span>
+                        <span class="ham"></span>
+                        <span class="ham"></span>
+                    </label>
+                    <ul>
+                        <li>
+                        <a href="#">Menu-1</a>
+                        </li>
+                        <li>
+                        <a href="#">Menu-2</a>
+                        </li>
+                        <li>
+                        <a href="#">Menu-3</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% block content %}{% endblock %}
+        </div>
+
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+
+        <!-- <script type="text/javascript">
+            $(document).on('submit', '.item', function(e) {
+                console.log('hello');
+                e.preventDefault();
+                $.ajax({
+                    type:'POST',
+                    url:'/',
+                    data: {
+                        itemid:$("form input:nth-child(1)").val(),
+                        itemname:$("form input:nth-child(2)").val(),
+                        itemtype:$("form input:nth-child(3)").val()
+                    },
+                    success:function() {
+                        console.log("added");
+                    }
+                })
+            });
+        </script> -->
+    </body>
+</html>
+    

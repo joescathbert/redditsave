@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="utility-menu">
+        <form method="post" class="new-folder-form">
+            <input type="hidden" name="itemid" value="nf">
+            <input type="hidden" name="itemname" value="New Folder">
+            <input type="hidden" name="itemtype" value="action">
+            <input type="submit" id="new-folder-button" name="new-folder-button" class="new-folder-button">
+            <label class="new-folder-button-label" for="new-folder-button"></label>
+        </form>
+        <form method="post" class="up-folder-form">
+            <input type="hidden" name="itemid" value="uf">
+            <input type="hidden" name="itemname" value="Up Folder">
+            <input type="hidden" name="itemtype" value="action">
+            <input type="submit" id="up-folder-button" name="up-folder-button" class="up-folder-button">
+            <label class="up-folder-button-label" for="up-folder-button"></label>
+        </form>
+    </div>
+
+    <div id="content">
+        <div class="items">
+            {% for item in item_list %}
+                <form method="post" id="todo-form" class="item">
+                    <input type="hidden" name="itemid" value="{{ item.id }}">
+                    <input type="hidden" name="itemname" value="{{ item.name }}">
+                    <input type="hidden" name="itemtype" value="{{ item.type }}">
+                    <input type="submit" id="{{ item.id }}" name="submit">
+                    <label for="{{ item.id }}" class="itemlabel">{{ item.name }}</label>
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
