@@ -18,8 +18,8 @@ class RedditModel:
         return [{'title': post.title, 'media_url': post.media, 'post_object': post} for post in self.reddit.subreddit(subreddit_name).search(query=query, sort=sort, time_filter=time_filter, limit=limit)]
 
     def get_saved_posts(self, username, limit):
-        # return [{'title': post.title, 'media_url': post.media, 'post_object': post} for post in self.reddit.redditor(username).saved(limit=limit) if isinstance(post, praw.models.reddit.submission.Submission)]
-        return [post for post in self.reddit.redditor(username).saved(limit=limit)]
+        return [post for post in self.reddit.redditor(username).saved(limit=limit)  if isinstance(post, praw.models.reddit.submission.Submission)]
+        
     @staticmethod
     def down_media(media_url, media_file_name):
         if media_url and media_file_name:

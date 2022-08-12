@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div>
+    <div class="new-folder-menu">
         <form method="post" id="newfolderform">
             <input type="text" name="foldername">
-            <input type="submit" id="create-folder-button" name="create-folder-button" class="create-folder-button">
+            <input type="submit" id="cancel-create-folder-button" name="newfolderaction" value="cancel">
+            <input type="submit" id="create-folder-button" name="newfolderaction" value="create">
         </form>
     </div>
 {% endblock %}
