@@ -5,6 +5,15 @@ class RedditSavedModel:
     def __init__(self):
         self.api_url = 'http://127.0.0.1:5000/redditsaveapi/'
 
+    def add_user(self, reddit_username):
+        user_details = self.get_user(reddit_username=reddit_username)
+        if not user_details:
+            response = requests.get(url=f'{self.api_url}/add_user/{reddit_username}')
+            data = json.loads(response.text)
+            print(data)
+            return data
+        return user_details
+
     def get_user(self, reddit_username):
         response = requests.get(url=f'{self.api_url}/get_user/{reddit_username}')
         data = json.loads(response.text)

@@ -4,15 +4,20 @@ from urllib.parse import unquote
 
 
 class RedditModel:
-    def __init__(self, client_id, client_secret, user_agent, username, password):
-        self.reddit_username=username
-        self.reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, user_agent=user_agent, username=username, password=password, check_for_updates=False, comment_kind="t1", message_kind="t4", redditor_kind="t2", submission_kind="t3", subreddit_kind="t5", trophy_kind="t6", oauth_url="https://oauth.reddit.com", reddit_url="https://www.reddit.com", short_url="https://redd.it", ratelimit_seconds=5, timeout=16)
+    def __init__(self, client_id, client_secret, user_agent):
+        self.reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, redirect_uri="http://192.168.0.112:5000", user_agent=user_agent)
+    
+    def get_auth_url(self):
+        return self.reddit.auth.url(scopes=["identity", "history", "readget_root_folder_id(reddit_username=REDDIT_OBJECT.get_reddit_username())"], state="hi", duration="permanent")
+
+    def authorize_app(self, code):
+        print(self.reddit.auth.authorize(code))
+
+    def get_reddit_username(self):
+        return self.reddit.user.me().name
 
     def get_post_object(self, post_id):
         return self.reddit.submission(id=post_id)
-
-    def get_reddit_username(self):
-        return self.reddit_username
 
     def get_post_details(self, subreddit_name, query, sort="relevance", limit=10, time_filter='all'):
         return [{'title': post.title, 'media_url': post.media, 'post_object': post} for post in self.reddit.subreddit(subreddit_name).search(query=query, sort=sort, time_filter=time_filter, limit=limit)]
