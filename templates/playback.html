@@ -1,8 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-    <video width="410" height="750" controls autoplay loop muted>
+    <video id="video-playback" height="692" controls autoplay muted>
         <source src="{{ media_url }}" type="video/mp4">
         <!-- <source src="movie.ogg" type="video/ogg"> -->
         Your browser does not support the video tag.
     </video>
+    <div class="utility-menu">
+        <form method="post" class="prev-item-form">
+            <input type="hidden" name="itemid" value="pi">
+            <input type="hidden" name="itemname" value="Previuos Item">
+            <input type="hidden" name="itemtype" value="action">
+            <input type="submit" id="prev-item-button" name="prev-item-button" class="prev-item-button">
+            <label class="prev-item-button-label" for="prev-item-button"></label>
+        </form>
+        <form method="post" class="next-item-form">
+            <input type="hidden" name="itemid" value="ni">
+            <input type="hidden" name="itemname" value="Next Item">
+            <input type="hidden" name="itemtype" value="action">
+            <input type="submit" id="next-item-button" name="next-item-button" class="next-item-button">
+            <label class="next-item-button-label" for="next-item-button"></label>
+        </form>
+    </div>
 {% endblock %}

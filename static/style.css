@@ -17,7 +17,6 @@
 }
 
 #logo {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: 15px 20px;
   font-size: 2em;
   color: red;
@@ -88,6 +87,7 @@ label.nav-menu-toggle span.ham {
   justify-content: space-between;
   margin-left: 30px;
   margin-right: 30px;
+  margin-bottom: 10px;
 }
 
 label.new-folder-button-label {
@@ -120,7 +120,7 @@ input.up-folder-button {
 .content {
   overflow: hidden;
   box-sizing: border-box;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-left: 30px;
   margin-right: 30px;
   width: calc(100% - 60px);
@@ -150,15 +150,82 @@ input.up-folder-button {
 
 /* New Folder Page */
 .new-folder-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 60px;
   margin-left: 30px;
   margin-right: 30px;
 }
-.new-folder-menu form input#create-folder-button {
-  background: green;
+.new-folder-menu form#newfolderform input#foldername-text {
+  margin: 20px 0px;
+  height: 40px;
+  border: 3px solid black;
+  border-radius: 10px;
 }
-.new-folder-menu form input#create-folder-button {
+.new-folder-menu form#newfolderform input#cancel-create-folder-button {
+  display: none;
+}
+.new-folder-menu form#newfolderform input#create-folder-button {
+  display: none;
+}
+
+label#foldername-text-label {
+  font-size: 1.5em;
+  color: red;
+}
+
+label#cancel-create-folder-label {
+  margin: 3px 0px;
+  height: 40px;
+  width: 150px;
+  line-height: 40px;
+  border: 1px solid red;
+  border-radius: 20px;
+  text-align: center;
+  background: white;
+}
+
+label#create-folder-label {
+  margin: 3px 0px;
+  height: 40px;
+  width: 150px;
+  line-height: 40px;
+  border: 1px solid white;
+  border-radius: 20px;
+  text-align: center;
   background: red;
+}
+
+/* Playback Page */
+label.prev-item-button-label {
+  display: block;
+  margin: 2px 0px;
+  height: 30px;
+  width: 30px;
+  padding-left: 22px;
+  background: url("/static/resources/prev.png") 50% 50%/30px 30px no-repeat;
+}
+
+input.prev-item-button {
+  display: none;
+}
+
+label.next-item-button-label {
+  display: block;
+  margin: 2px 0px;
+  height: 30px;
+  width: 30px;
+  padding-left: 22px;
+  background: url("/static/resources/next.png") 50% 50%/30px 30px no-repeat;
+}
+
+input.next-item-button {
+  display: none;
+}
+
+#video-playback {
+  margin: 10px 15px;
 }
 
 /* hide navigation icon for sublabels */    
@@ -181,4 +248,6 @@ input.up-folder-button {
   transition: transform 0.35s;
 }
 
-/* for show *//*# sourceMappingURL=style.css.map */
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}/*# sourceMappingURL=style.css.map */

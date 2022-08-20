@@ -8,7 +8,7 @@ class RedditModel:
         self.reddit = praw.Reddit(client_id=client_id, client_secret=client_secret, redirect_uri="http://192.168.0.112:5000", user_agent=user_agent)
     
     def get_auth_url(self):
-        return self.reddit.auth.url(scopes=["identity", "history", "readget_root_folder_id(reddit_username=REDDIT_OBJECT.get_reddit_username())"], state="hi", duration="permanent")
+        return self.reddit.auth.url(scopes=["identity", "history", "read"], state="hi", duration="permanent")
 
     def authorize_app(self, code):
         print(self.reddit.auth.authorize(code))
@@ -19,11 +19,11 @@ class RedditModel:
     def get_post_object(self, post_id):
         return self.reddit.submission(id=post_id)
 
-    def get_post_details(self, subreddit_name, query, sort="relevance", limit=10, time_filter='all'):
-        return [{'title': post.title, 'media_url': post.media, 'post_object': post} for post in self.reddit.subreddit(subreddit_name).search(query=query, sort=sort, time_filter=time_filter, limit=limit)]
+    def get_search_posts(self, subreddit_name, query, sort="relevance", limit=10, time_filter='all'):
+        return [post for post in self.reddit.subreddit(subreddit_name).search(query=query, sort=sort, time_filter=time_filter, limit=limit)]
 
     def get_saved_posts(self, username, limit):
-        return [post for post in self.reddit.redditor(username).saved(limit=limit)  if isinstance(post, praw.models.reddit.submission.Submission)]
+        return [post for post in self.reddit.redditor(username).saved(limit=limit) if isinstance(post, praw.models.reddit.submission.Submission) and self.get_media_url(post=post)[0]]
         
     @staticmethod
     def down_media(media_url, media_file_name):

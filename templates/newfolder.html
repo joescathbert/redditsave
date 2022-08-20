@@ -2,10 +2,13 @@
 
 {% block content %}
     <div class="new-folder-menu">
+        <label for="foldername-text" id="foldername-text-label">Folder Name</label>
         <form method="post" id="newfolderform">
-            <input type="text" name="foldername">
+            <input type="text" id="foldername-text" name="foldername">
             <input type="submit" id="cancel-create-folder-button" name="newfolderaction" value="cancel">
             <input type="submit" id="create-folder-button" name="newfolderaction" value="create">
         </form>
+        <label for="cancel-create-folder-button" id="cancel-create-folder-label">Cancel</label>
+        <label for="create-folder-button" id="create-folder-label">Create</label>
     </div>
 {% endblock %}
