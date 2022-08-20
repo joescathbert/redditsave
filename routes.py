@@ -7,13 +7,15 @@ from models.redditsaved import RedditSavedModel
 
 load_dotenv()
 
+# User Global Variables
 REDDIT_OBJECT = None
+REDDIT_USERNAME = ''
 REDDIT_SAVED_OBJECT = RedditSavedModel()
-LIMIT = 500
+CURRENT_FOLDER = 0
 
+LIMIT = 500
 CACHE_ITEM_LIST = []
 
-CURRENT_FOLDER = 0
 
 def get_folder_item_list(current_folder):
     saved_folders_list = REDDIT_SAVED_OBJECT.get_saved_folders(parent_folder_id=current_folder)
@@ -33,7 +35,9 @@ def get_root_folder_id(reddit_username):
 
 def refresh_cache_item_list():
     global CACHE_ITEM_LIST
-    CACHE_ITEM_LIST = [{'name': post.title, 'id': post.id, 'type': 'post'} for post in REDDIT_OBJECT.get_saved_posts(username=REDDIT_OBJECT.get_reddit_username(), limit=LIMIT)]
+    # CACHE_ITEM_LIST = [{'name': post.title, 'id': post.id, 'type': 'post'} for post in REDDIT_OBJECT.get_saved_posts(username=REDDIT_USERNAME, limit=LIMIT)]
+    CACHE_ITEM_LIST = [{'name': post['title'], 'id': post['id'], 'type': 'post'} for post in REDDIT_OBJECT.get_posts_pushshiftapi(query='', subreddit='', author='')]
+    
 
 @app.before_request
 def limit_remote_addr():
@@ -56,7 +60,7 @@ def login():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    global REDDIT_OBJECT, CURRENT_FOLDER, REDDIT_SAVED_OBJECT, CACHE_ITEM_LIST
+    global REDDIT_OBJECT, CURRENT_FOLDER, REDDIT_SAVED_OBJECT, REDDIT_USERNAME, CACHE_ITEM_LIST
 
     if not REDDIT_OBJECT:
         return redirect(url_for('login'))
@@ -66,8 +70,9 @@ def home():
         code = request.args.get('code')
         if code:
             REDDIT_OBJECT.authorize_app(code=code)
-            REDDIT_SAVED_OBJECT.add_user(reddit_username=REDDIT_OBJECT.get_reddit_username())
-            CURRENT_FOLDER = get_root_folder_id(reddit_username=REDDIT_OBJECT.get_reddit_username())   
+            REDDIT_USERNAME = REDDIT_OBJECT.get_reddit_username()
+            REDDIT_SAVED_OBJECT.add_user(reddit_username=REDDIT_USERNAME)
+            CURRENT_FOLDER = get_root_folder_id(reddit_username=REDDIT_USERNAME)     
 
     item_list = []
 
@@ -78,11 +83,8 @@ def home():
 
         if item_type in ['inbuilt_folder', 'user_folder'] :
             CURRENT_FOLDER = int(request.form['itemid'])
-            if item_type == 'inbuilt_folder':
-                refresh_cache_item_list()
-                item_list = CACHE_ITEM_LIST
 
-        if item_type == 'action' and CURRENT_FOLDER != get_root_folder_id(reddit_username=REDDIT_OBJECT.get_reddit_username()):
+        if item_type == 'action' and CURRENT_FOLDER != get_root_folder_id(reddit_username=REDDIT_USERNAME):
             if item_id == 'nf' and get_folder_type(current_folder=CURRENT_FOLDER) == 'user_folder':
                 return redirect(url_for('new_folder'))
             if item_id == 'uf':
@@ -92,23 +94,25 @@ def home():
             return redirect(url_for('playback', post_id=item_id))
 
     print(CURRENT_FOLDER)
-    if CURRENT_FOLDER == get_root_folder_id(reddit_username=REDDIT_OBJECT.get_reddit_username()) + 1:
-        refresh_cache_item_list()
+    if CURRENT_FOLDER == get_root_folder_id(reddit_username=REDDIT_USERNAME) + 1:
+        if not CACHE_ITEM_LIST:
+            refresh_cache_item_list()
         item_list = CACHE_ITEM_LIST
     item_list += get_folder_item_list(current_folder=CURRENT_FOLDER)
     print(len(item_list))
+
     return render_template('home.html', item_list=item_list)
 
 @app.route('/new_folder', methods=['GET', 'POST'])
 def new_folder():
-    if CURRENT_FOLDER == get_root_folder_id(reddit_username=REDDIT_OBJECT.get_reddit_username()):
+    if CURRENT_FOLDER == get_root_folder_id(reddit_username=REDDIT_USERNAME):
         return redirect(url_for('home'))
 
     if request.method == 'POST':
         if request.form['newfolderaction'] == 'create':
             folder_name = request.form['foldername']
             print(folder_name)
-            REDDIT_SAVED_OBJECT.create_saved_folder(folder_name=folder_name, parent_folder_id=CURRENT_FOLDER, reddit_username=REDDIT_OBJECT.get_reddit_username())
+            REDDIT_SAVED_OBJECT.create_saved_folder(folder_name=folder_name, parent_folder_id=CURRENT_FOLDER, reddit_username=REDDIT_USERNAME)
         return redirect(url_for('home'))
     
     return render_template('newfolder.html')
@@ -125,20 +129,20 @@ def playback(post_id):
         item_id = request.form['itemid']
         print(item_id, item_type)
 
-        current_index = [c_i['id'] for c_i in CACHE_ITEM_LIST].index(post_id)
-
-        print(post_id)
-
-        if item_id == 'pi' and current_index != 0:
-            post_id = CACHE_ITEM_LIST[current_index - 1]['id']
-            print(current_index - 1)
-        elif item_id == 'ni' and current_index != len(CACHE_ITEM_LIST) - 1:
-            post_id = CACHE_ITEM_LIST[current_index + 1]['id']
-            print(current_index + 1)
+        if item_id in ['pi', 'ni']:
+            current_index = [c_i['id'] for c_i in CACHE_ITEM_LIST].index(post_id)
+            if item_id == 'pi' and current_index != 0:
+                post_id = CACHE_ITEM_LIST[current_index - 1]['id']
+                print(current_index - 1)
+            elif item_id == 'ni' and current_index != len(CACHE_ITEM_LIST) - 1:
+                post_id = CACHE_ITEM_LIST[current_index + 1]['id']
+                print(current_index + 1)
         
         return redirect(url_for('playback', post_id=post_id))
     
     post_object = REDDIT_OBJECT.get_post_object(post_id=post_id)
     media_url = REDDIT_OBJECT.get_media_url(post=post_object)[0]
+    REDDIT_OBJECT.get_post_details(post=post_object)
+    print(media_url)
 
     return render_template('playback.html', media_url=media_url)

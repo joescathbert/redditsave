@@ -9,7 +9,7 @@
         <div class="container">
             <div id="wrapper">
                 <div id="logo">
-                    Reddit Save
+                    <a href="{{ url_for('home') }}">Reddit Save</a>
                 </div>
                 <input type="checkbox" id="nav-menu-checkbox" name="nav-menu-checkbox" class="nav-menu-checkbox">
                 <label class="nav-menu-toggle" for="nav-menu-checkbox">
@@ -42,7 +42,7 @@
         <script type="text/javascript">
             var vid = document.getElementById("video-playback");
             vid.onended = function() {
-                document.getElementById("next-item-button").click()
+                document.getElementById("prev-item-button").click()
             };
         </script>
 

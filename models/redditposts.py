@@ -1,6 +1,8 @@
 import praw
 import requests
 from urllib.parse import unquote
+from datetime import datetime
+import html
 
 
 class RedditModel:
@@ -18,6 +20,17 @@ class RedditModel:
 
     def get_post_object(self, post_id):
         return self.reddit.submission(id=post_id)
+
+    def get_posts_pushshiftapi(self, query, subreddit, author):
+        psapi_url = f'https://api.pushshift.io/reddit/search/submission/?q={query}&subreddit={subreddit}&author={author}&size=500&sort=asc'
+        api_response = requests.get(psapi_url)
+        api_data = api_response.json()
+        return [{'title': html.unescape(post['title']), 'id': post['id'] } for post in api_data['data'] if post['domain'] == 'gfycat.com']
+
+    def get_post_details(self, post):
+        print("Title:", post.title)
+        print("Created:", post.created_utc, datetime.fromtimestamp(float(post.created_utc)))
+        print("Reddit URL:", post.permalink)
 
     def get_search_posts(self, subreddit_name, query, sort="relevance", limit=10, time_filter='all'):
         return [post for post in self.reddit.subreddit(subreddit_name).search(query=query, sort=sort, time_filter=time_filter, limit=limit)]
