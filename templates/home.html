@@ -7,14 +7,28 @@
             <input type="hidden" name="itemname" value="New Folder">
             <input type="hidden" name="itemtype" value="action">
             <input type="submit" id="new-folder-button" name="new-folder-button" class="new-folder-button">
-            <label class="new-folder-button-label" for="new-folder-button"></label>
+            <label class="new-folder-button-label {{ 'fade-element' if not utility_indicator.add_directory }}" for="new-folder-button"></label>
+        </form>
+        <form method="post" class="copy-item-form">
+            <input type="hidden" name="itemid" value="copy">
+            <input type="hidden" name="itemname" value="Copy Item">
+            <input type="hidden" name="itemtype" value="action">
+            <input type="submit" id="copy-item-button" name="copy-item-button" class="copy-item-button">
+            <label class="copy-item-button-label {{ 'fade-element' if not utility_indicator.copy_item }}" for="copy-item-button"></label>
+        </form>
+        <form method="post" class="paste-item-form">
+            <input type="hidden" name="itemid" value="paste">
+            <input type="hidden" name="itemname" value="Paste Item">
+            <input type="hidden" name="itemtype" value="action">
+            <input type="submit" id="paste-item-button" name="paste-item-button" class="paste-item-button">
+            <label class="paste-item-button-label {{ 'fade-element' if not utility_indicator.paste_item }}" for="paste-item-button"></label>
         </form>
         <form method="post" class="up-folder-form">
             <input type="hidden" name="itemid" value="uf">
             <input type="hidden" name="itemname" value="Up Folder">
             <input type="hidden" name="itemtype" value="action">
             <input type="submit" id="up-folder-button" name="up-folder-button" class="up-folder-button">
-            <label class="up-folder-button-label" for="up-folder-button"></label>
+            <label class="up-folder-button-label {{ 'fade-element' if not utility_indicator.up_directory }}" for="up-folder-button"></label>
         </form>
     </div>
 
@@ -26,8 +40,12 @@
                     <input type="hidden" name="itemname" value="{{ item.name }}">
                     <input type="hidden" name="itemtype" value="{{ item.type }}">
                     <input type="submit" id="{{ item.id }}" name="submit">
-                    <label for="{{ item.id }}" class="itemlabel">{{ item.name }}</label>
                 </form>
+                <label for="{{ item.id }}" class="itemlabel">
+                    <span class="{{ item.type }}">
+                    </span>
+                    {{ item.name }}
+                </label>
             {% endfor %}
         </div>
     </div>

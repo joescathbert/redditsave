@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form method="post" id="login">
-        <input type="submit" name="login" value="login">
-    </form>
+    <div class="login-menu">
+        <form method="post" id="login-form">
+            <input type="submit" id="login-button" name="loginaction" value="login">
+        </form>
+        <label for="login-button" id="login-button-label">Log In Using Reddit</label>
+    </div>
 {% endblock %}

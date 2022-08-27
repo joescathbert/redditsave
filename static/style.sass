@@ -97,6 +97,17 @@ label.new-folder-button-label
 
 input.new-folder-button
   display: none
+
+label.paste-item-button-label
+  display: block
+  margin: 2px 0px
+  height: 30px
+  width: 30px
+  padding-left: 22px
+  background: url("/static/resources/paste.png") 50% 50% / 30px 30px no-repeat
+
+input.paste-item-button
+  display: none
       
 label.up-folder-button-label
   display: block
@@ -108,6 +119,10 @@ label.up-folder-button-label
 
 input.up-folder-button
   display: none
+
+.fade-element
+  pointer-events: none
+  opacity: 0.5
 
 /* Explorer Content */
 
@@ -129,19 +144,58 @@ input.up-folder-button
       display: none
 
     form.item
-      display: flex
-      align-items: center
-      width: 100%
-      height: 40px
-      padding-left: 20px
-      background-color: red
-      color: black
-      margin-top: 2px
-      margin-left: 3px
+      display: none
 
-      label.itemlabel
-        width: 100%
-        -webkit-tap-highlight-color: rgba(0,0,0,0)
+label.itemlabel
+  display: flex
+  align-items: center
+  width: 100%
+  height: 40px
+  background-color: rgba(255, 0, 0, 0.688)
+  color: black
+  margin-top: 2px
+  -webkit-tap-highlight-color: rgba(0,0,0,0)
+
+  span
+    display: block
+    margin: 2px 0px
+    height: 30px
+    width: 30px
+    padding-left: 22px
+
+  span.post
+    background: url("/static/resources/media.png") 50% 50% / 30px 30px no-repeat
+  
+  span.inbuilt_folder
+    background: url("/static/resources/inbuilt_folder.png") 50% 50% / 30px 30px no-repeat
+  
+  span.user_folder
+    background: url("/static/resources/user_folder.png") 50% 50% / 30px 30px no-repeat
+
+/* Login Page */
+
+.login-menu
+  display: flex
+  flex-direction: column
+  align-items: center
+  margin-top: 60px
+  margin-left: 30px
+  margin-right: 30px
+
+  form#login-form
+    input#login-button
+      display: none
+
+label#login-button-label
+  margin: 3px 0px
+  height: 50px
+  width: 150px
+  line-height: 50px
+  border: 1px solid white
+  border-radius: 20px
+  text-align: center
+  background: red
+
 
 /* New Folder Page */
 
@@ -201,6 +255,17 @@ label.prev-item-button-label
   background: url("/static/resources/prev.png") 50% 50% / 30px 30px no-repeat
 
 input.prev-item-button
+  display: none
+
+label.copy-item-button-label
+  display: block
+  margin: 2px 0px
+  height: 30px
+  width: 30px
+  padding-left: 22px
+  background: url("/static/resources/copy.png") 50% 50% / 30px 30px no-repeat
+
+input.copy-item-button
   display: none
 
 label.next-item-button-label

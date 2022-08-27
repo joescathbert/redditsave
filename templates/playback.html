@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <video id="video-playback" height="692" controls autoplay muted>
+    <video id="video-playback" height="692" controls autoplay loop muted>
         <source src="{{ media_url }}" type="video/mp4">
         <!-- <source src="movie.ogg" type="video/ogg"> -->
         Your browser does not support the video tag.
@@ -12,6 +12,13 @@
             <input type="hidden" name="itemtype" value="action">
             <input type="submit" id="prev-item-button" name="prev-item-button" class="prev-item-button">
             <label class="prev-item-button-label" for="prev-item-button"></label>
+        </form>
+        <form method="post" class="copy-item-form">
+            <input type="hidden" name="itemid" value="copy">
+            <input type="hidden" name="itemname" value="Copy Item">
+            <input type="hidden" name="itemtype" value="action">
+            <input type="submit" id="copy-item-button" name="copy-item-button" class="copy-item-button">
+            <label class="copy-item-button-label" for="copy-item-button"></label>
         </form>
         <form method="post" class="next-item-form">
             <input type="hidden" name="itemid" value="ni">

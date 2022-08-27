@@ -3,6 +3,7 @@ import requests
 from urllib.parse import unquote
 from datetime import datetime
 import html
+import re
 
 
 class RedditModel:
@@ -66,6 +67,15 @@ class RedditModel:
             media_url = thumbnail_url.replace("size_restricted.gif", "mobile.mp4" )
             media_url = media_url.replace("mobile.jpg", "mobile.mp4")
             media_file_name = f'{post.title} - {media_url.split("/")[3]}'
+        elif 'gfycat.com' in post.url:
+            url_response = requests.get(post.url)
+            url_html = url_response.text
+            link_list_gfy = re.findall(r'(<source src=")([\w./:-]+)(" type="video/mp4")', url_html)
+            link_list_red = re.findall(r'("contentUrl":")([\w./:-]+)"', url_html)
+            link_list = link_list_gfy if link_list_gfy else link_list_red
+            if link_list:
+                media_url = link_list[0][1]
+                media_file_name = f'{post.title} - {media_url.split("/")[3]}'
         return media_url, media_file_name
         
     def download_media(self, post):
